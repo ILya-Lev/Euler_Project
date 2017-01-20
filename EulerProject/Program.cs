@@ -12,7 +12,8 @@ namespace EulerProject
 			//var result = Problem22.TotalScore();
 			//var result = Problem102.AmountOfTrianglesWithOriginInside();
 			//var result = new Problem107().WeightDifference();
-			var result = new Problem136().NumbersWithOneSolution();
+			//var result = new Problem136().NumbersWithOneSolution();
+			var result = new Problem151().SeenOneSheet();
 			Console.WriteLine(result);
 		}
 	}
