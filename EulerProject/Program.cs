@@ -10,7 +10,8 @@ namespace EulerProject
 			//var result = Problem5.TargetProduct();
 			//var result = Problem21.SumOfAmicableNumbers();
 			//var result = Problem22.TotalScore();
-			var result = Problem102.AmountOfTrianglesWithOriginInside();
+			//var result = Problem102.AmountOfTrianglesWithOriginInside();
+			var result = new Problem107().WeightDifference();
 			Console.WriteLine(result);
 		}
 	}
