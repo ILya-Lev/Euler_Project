@@ -42,15 +42,17 @@ namespace EulerProject
 			return Enumerable
 				.Range(1, denumerator - 1)
 				.Select(numerator => new Fraction { Numerator = numerator, Denumerator = denumerator })
-				.Select(Reduce);
+				.Where(f => HigestCommonFactor(f.Denumerator, f.Numerator) == 1);
+			//.Select(Reduce);
 		}
 
 		public IEnumerable<Fraction> UniqueFractionsWithDenumeratorLessThan(int limit)
 		{
 			return Enumerable
 				.Range(2, limit - 1)
-				.SelectMany(FractionsForDenumerator)
-				.Distinct(new FractionComparer());
+				.AsParallel()
+				.SelectMany(FractionsForDenumerator);
+			//.Distinct(new FractionComparer());
 		}
 	}
 

@@ -54,7 +54,7 @@ namespace EulerProject.UnitTests
 
 		[DataRow(2, 1)]
 		[DataRow(3, 2)]
-		[DataRow(4, 3)]
+		//[DataRow(4, 3)]
 		[DataRow(5, 4)]
 		[DataTestMethod]
 		public void FractionsForDenumerator_GenerateAmount(int denumerator, int amount)
@@ -73,10 +73,19 @@ namespace EulerProject.UnitTests
 		}
 
 		[TestMethod]
-		public void UniqueFractionsWithDenumeratorLessThan_million_ItDepends()
+		public void UniqueFractionsWithDenumeratorLessThan_Thousand()
 		{
 			var amount = _problemSolver.UniqueFractionsWithDenumeratorLessThan(1000).Count();
-			amount.Should().BeGreaterThan(21);
+			amount.Should().BeGreaterOrEqualTo(306324);
+			Debug.Print($"{amount}");
+		}
+
+		[TestMethod]
+		public void UniqueFractionsWithDenumeratorLessThan_TenThousands()
+		{
+			//30464963
+			var amount = _problemSolver.UniqueFractionsWithDenumeratorLessThan(1000 * 10).Count();
+			amount.Should().BeGreaterOrEqualTo(306324);
 			Debug.Print($"{amount}");
 		}
 	}
