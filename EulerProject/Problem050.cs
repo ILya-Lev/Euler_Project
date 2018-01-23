@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using MoreLinq;
 
 namespace EulerProject
@@ -28,7 +29,9 @@ namespace EulerProject
 
 		internal IEnumerable<PrimeSum> FindAllPrimeSums(IReadOnlyList<int> primes)
 		{
-			for (int startIndex = 0; startIndex < primes.Count; startIndex++)
+			var chains = new List<PrimeSum>();
+
+			Parallel.For(0, primes.Count, startIndex =>
 			{
 				for (int endIndex = startIndex + 1; endIndex < primes.Count; endIndex++)
 				{
@@ -39,9 +42,11 @@ namespace EulerProject
 					if (total == null)
 						break;
 					if (IsPrime((int)total))
-						yield return new PrimeSum { StartIndex = startIndex, SequenceLength = endIndex, Value = total.Value };
+						chains.Add(new PrimeSum { StartIndex = startIndex, SequenceLength = endIndex, Value = total.Value });
 				}
-			}
+			});
+
+			return chains;
 		}
 
 		private int? CalculateSumLessThan(IEnumerable<int> subsequence, int maxAllowedTotal)
