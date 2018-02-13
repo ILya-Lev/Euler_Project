@@ -7,25 +7,23 @@ namespace EulerProject
 {
 	public class Problem607
 	{
-		private static readonly double H = 25 * (Math.Sqrt(2) - 1);
+		private static readonly decimal H = 25 * (Sqrt(2) - 1);
 		private const int h = 10;
 		private const int c = 10;
 		private static readonly IReadOnlyList<int> v = new[] { 9, 8, 7, 6, 5 };
 
-		public double Solve()
+		public decimal Solve()
 		{
 			var initialSin = CalculateInitialAngelSin();
 			var time = CalculateOverallTime(initialSin);
 			return time;
 		}
 
-		private double CalculateInitialAngelSin()
+		private decimal CalculateInitialAngelSin()
 		{
-			var precision = 100_000_000;
-			var maxSin = 1;//Math.Sqrt(2) / 2;
+			var precision = (long)Math.Pow(10, 16);
 
-			var angles = Enumerable
-				.Range(1, precision)
+			var angles = GenerateRange()
 				.AsParallel()
 				.Select(seed => new { Value = Expression(seed), Seed = seed });
 			//.OrderBy(item => Math.Abs(item.Value))
@@ -36,21 +34,32 @@ namespace EulerProject
 
 			return Sin(solution.Seed);
 
-			double Sin(int seed) => (double)maxSin / precision * seed;
+			IEnumerable<long> GenerateRange()
+			{
+				var lowerBound = (long)(0.7919678124546M * precision);
+				var upperBound = (long)(0.7919678124547M * precision);
 
-			double Expression(int seed)
+				for (long seed = lowerBound; seed < upperBound; seed++)
+				{
+					yield return seed;
+				}
+			}
+
+			decimal Sin(long seed) => (decimal)seed / precision;
+
+			decimal Expression(long seed)
 			{
 				var s = Sin(seed);
-				return 2 * H * (s / Math.Sqrt(1 - s * s) - 1)
-					 + h * v.Select(u => u / Math.Sqrt(c * c - u * u * s * s) - 1).Sum();
+				return 2 * H * (s / Sqrt(1 - s * s) - 1)
+					 + h * v.Select(u => u / Sqrt(c * c - u * u * s * s) - 1).Sum();
 			}
 		}
 
-		private double CalculateOverallTime(double initialAngelSin)
+		private decimal CalculateOverallTime(decimal initialAngelSin)
 		{
 			var s = initialAngelSin;//for the sake of simplicity
-			var time = 2 * H / Math.Sqrt(1 - s * s) / c
-					   + c * h * v.Select(u => 1 / Math.Sqrt(c * c - u * u * s * s) / u).Sum();
+			var time = 2 * H / Sqrt(1 - s * s) / c
+					   + c * h * v.Select(u => 1 / Sqrt(c * c - u * u * s * s) / u).Sum();
 
 			return time;
 		}
@@ -59,7 +68,7 @@ namespace EulerProject
 		// epsilon - an accuracy of calculation of the root from our number.
 		// The result of the calculations will differ from an actual value
 		// of the root on less than epslion.
-		public static decimal Sqrt(decimal x, decimal epsilon = 0.0M)
+		public static decimal Sqrt(decimal x, decimal epsilon = 0.00000000000000000001M)
 		{
 			if (x < 0) throw new OverflowException("Cannot calculate square root from a negative number");
 
