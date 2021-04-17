@@ -2,6 +2,9 @@
 
 namespace Solutions
 {
+    /// <summary>
+    /// problem description is here https://projecteuler.net/problem=352
+    /// </summary>
     public class Problem352
     {
         public static double CalculateMinAvgTests(int amount, double frequency)
